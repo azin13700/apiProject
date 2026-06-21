@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="apiProject.Infrastructure\**" />
+    <Content Remove="apiProject.Infrastructure\**" />
+    <EmbeddedResource Remove="apiProject.Infrastructure\**" />
+    <None Remove="apiProject.Infrastructure\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\DependantsController.cs" />
+    <Compile Remove="Controllers\WorkExperienceController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.16">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\apiProject.Application\apiProject.Application.csproj" />
+    <ProjectReference Include="..\apiProject.Infrastructure\apiProject.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
