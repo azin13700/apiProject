@@ -37,7 +37,8 @@ namespace apiProject.Infrastructure.Repositories
 
         public async Task<Permissions?> GetByIdAsync(int id)
         {
-            return await _context.Permissions.FindAsync(id);
+            return await _context.Permissions.Where(x => x.Id == id).FirstOrDefaultAsync();
+
         }
 
         //public async Task<Permissions?> GetByNameAsync(string name)
@@ -66,7 +67,7 @@ namespace apiProject.Infrastructure.Repositories
 
         public async Task<Permissions?> GetByNameAsync(string name)
         {
-            return await _context.Permissions.FindAsync( name);
+            return await _context.Permissions.FirstOrDefaultAsync(x => x.Name == name);
         }
 
         public  async   Task<List<Permissions>> GetAllGroupByCategoryAsync()

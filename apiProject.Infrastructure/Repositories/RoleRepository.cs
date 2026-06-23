@@ -23,7 +23,7 @@ namespace apiProject.Infrastructure.Repositories
             return await _context.Role
                 .Include(x=>x.RolePermissions)
                 .ThenInclude(x=>x.Permissions)      
-                .Where(x=>x.Id !=1).ToListAsync();
+             .ToListAsync();
         }
 
    
