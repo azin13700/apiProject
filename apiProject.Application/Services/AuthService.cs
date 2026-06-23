@@ -1,6 +1,7 @@
 ﻿using apiProject.Application.Dtos;
 using apiProject.Application.Dtos.Responses;
 using apiProject.Application.Services.Interface;
+using apiProject.Domain.Entities;
 using apiProject.Infrastructure.Repositories;
 using apiProject.Infrastructure.Repositories.Interface;
 using System;
@@ -23,26 +24,38 @@ namespace apiProject.Application.Services
             _roleRepository = roleRepository;
 
         }
-        public  async  Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
+        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
         {
+            var login = await _userRepository.GetByLoginAsync(request.Username , request.Password);
+
+            if (login == null)
+            {
+                throw new Exception("نام کاربری یا رمز عبور اشتباه است");
+            }
+
             var user = await _userRepository.GetWithRolesAndPermissionsAsync(request.Username);
-            var roles = user.UserRoles.Select(ur => ur.Role.Name).ToList();
+
+
+            var roles = user.UserRoles
+                .Select(ur => ur.Role.Name)
+                .ToList();
+
             var permissions = user.UserRoles
-                .SelectMany(ur => ur.Role.RolePermissions)
-                .Select(rp => rp.Permissions)
+                .SelectMany(ur => ur.Role.RolePermissions ?? new List<RolePermissions>())
+                .Select(rp => rp.Permissions?.Name)
+                .Where(p => p != null)
                 .Distinct()
                 .ToList();
+
             return new LoginResponseDto
             {
                 UserId = user.Id,
                 Username = user.UserName,
-                FullName = user.Name + ' ' + user.Family,
+                FullName = $"{user.Name} {user.Family}",
                 Email = user.Email,
-           
                 Roles = roles,
-            // Permissions = permissions.ToArray()
+                Permissions = permissions
             };
-
         }
 
         public Task LogoutAsync(int userId)

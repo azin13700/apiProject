@@ -115,6 +115,7 @@ namespace apiProject.Infrastructure.Repositories
             return await _context.User.AnyAsync(x => x.UserName == userName && x.Email == email);
            
         }
+    
         public async Task DeleteUserPhotoAsync(int userId)
         {
             var photo = await _context.UserPhoto.FirstOrDefaultAsync(p => p.UserId == userId);
@@ -126,5 +127,10 @@ namespace apiProject.Infrastructure.Repositories
         }
         public async Task AddUserRoleAsync(UserRole userRole) => await _context.UserRole.AddAsync(userRole);
 
+        public async Task<User> GetByLoginAsync(string username, string password)
+        {
+            var user = _context.User.FirstOrDefaultAsync(x => x.UserName == username && x.Password == password);
+            return await user;
+        }
     }
 }

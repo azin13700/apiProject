@@ -23,6 +23,7 @@ namespace apiProject.Infrastructure.Repositories.Interface
 
         Task<User> GetByUsernameAsync(string username);
         Task<User> GetByEmailAsync(string email);
+        Task<User> GetByLoginAsync(string username, string password);
         Task<User> GetWithRolesAndPermissionsAsync(string username);
         Task<bool> UsernameExistsAsync(string username);
         Task<bool> EmailExistsAsync(string email);

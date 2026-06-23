@@ -17,7 +17,7 @@ namespace apiProject.Application.Services
         private readonly IUnitRepository _unitRepository;
         private readonly IUserRoleRepository _userRoleRepository;
         private readonly IUserUnitRepository _userUnitRepository;
-        public UserService(IUserRepository repository,IUserRoleRepository userRoleRepository, IUserUnitRepository userUnitRepository, IUnitRepository unitRepository)
+        public UserService(IUserRepository repository, IUserRoleRepository userRoleRepository, IUserUnitRepository userUnitRepository, IUnitRepository unitRepository)
         {
             _repository = repository;
             _userRoleRepository = userRoleRepository;
@@ -25,7 +25,7 @@ namespace apiProject.Application.Services
             _unitRepository = unitRepository;
         }
 
-        public  async  Task<bool?> ChangeStatus(ChangeStatusUserDto dto)
+        public async Task<bool?> ChangeStatus(ChangeStatusUserDto dto)
         {
             var employee = await _repository.GetUserByIdAsync(dto.UserId);
             if (employee == null)
@@ -53,10 +53,10 @@ namespace apiProject.Application.Services
                 DateOfBirth = dto.DateOfBirth,
                 CreatedAt = DateOnly.FromDateTime(DateTime.UtcNow),
                 IsActive = true,
-                NationalNo = dto.NationalNo,  
-                Password = dto.Password ,
-                PhoneNumber = dto.PhoneNumber,  
-                UserName = dto.UserName ,              
+                NationalNo = dto.NationalNo,
+                Password = dto.Password,
+                PhoneNumber = dto.PhoneNumber,
+                UserName = dto.UserName,
             };
             await _repository.AddUserAsync(user);
 
@@ -71,7 +71,7 @@ namespace apiProject.Application.Services
 
                 var photo = new UserPhoto
                 {
-                   UserId = user.Id,
+                    UserId = user.Id,
                     ImageData = ms.ToArray()
                 };
 
@@ -88,14 +88,14 @@ namespace apiProject.Application.Services
                     var userRole = new UserRole
                     {
                         RoleId = roleId,
-                        UserId = user.Id ,
+                        UserId = user.Id,
                         Status = dto.Status,
                     };
 
-                 await   _userRoleRepository.AddAsync(userRole);
+                    await _userRoleRepository.AddAsync(userRole);
                     await _userRoleRepository.SaveChangesAsync();
                 }
-              
+
 
             }
 
@@ -108,14 +108,14 @@ namespace apiProject.Application.Services
                         UnitId = unitId,
                         UserId = user.Id
                     };
-                    
+
                     await _userUnitRepository.AddAsync(userRole);
                     await _userUnitRepository.SaveChangesAsync();
                 }
             }
 
-            return  user.Id;
-         
+            return user.Id;
+
         }
 
         public async Task<List<UserResponseDto>> GetAllUserAsync()
@@ -131,8 +131,8 @@ namespace apiProject.Application.Services
                 UserName = user.UserName,
                 IsActive = user.IsActive,
                 Unit = user.UserUnits
-                     .Where(x=>x.Unit != null)
-                     .Select(x=>x.Unit.Name)
+                     .Where(x => x.Unit != null)
+                     .Select(x => x.Unit.Name)
                     .ToList() ?? new List<string>(),
                 Photo = user.UserPhoto == null
                  ? null
@@ -144,7 +144,7 @@ namespace apiProject.Application.Services
                  .ToList() ?? new List<string>(),
 
                 Status = user.UserRoles?
-                 .Select(x => x.Status )
+                 .Select(x => x.Status)
                  .FirstOrDefault()
             }).ToList();
         }
@@ -164,14 +164,14 @@ namespace apiProject.Application.Services
                 NationalNo = user.NationalNo.ToString(),
                 Password = user.Password,
                 PhoneNumber = user.PhoneNumber.ToString(),
-                Photo =user.UserPhoto?.ImageData ,
+                Photo = user.UserPhoto?.ImageData,
                 IsActive = user.IsActive,
-                UserId =user.Id,
-                UserName=user.UserName,
+                UserId = user.Id,
+                UserName = user.UserName,
                 UserPhotoId = user.UserPhoto.UserId,
-                 Status=user.UserRoles.Select(x=>x.Status).FirstOrDefault(),
-                 RoleId = user.UserRoles.Select(x=>x.RoleId).ToArray(),
-                Unitid = user.UserUnits.Select(x=>x.UnitId).ToArray()
+                Status = user.UserRoles.Select(x => x.Status).FirstOrDefault(),
+                RoleId = user.UserRoles.Select(x => x.RoleId).ToArray(),
+                Unitid = user.UserUnits.Select(x => x.UnitId).ToArray()
 
             };
 
@@ -264,22 +264,25 @@ namespace apiProject.Application.Services
             var query = users.AsQueryable();
 
             // ✅ جستجو
-            if (!string.IsNullOrWhiteSpace(dto.FullName))
+            if (!string.IsNullOrWhiteSpace(dto.FullName) || !string.IsNullOrWhiteSpace(dto.UserName) || !string.IsNullOrWhiteSpace(dto.Email))
             {
                 var term = dto.FullName.Trim().ToLower();
+                var username = dto.UserName.Trim().ToLower();
+                var email = dto.Email.Trim().ToLower();
                 query = query.Where(e =>
                     (e.Name != null && e.Name.ToLower().Contains(term)) ||
                     (e.Family != null && e.Family.ToLower().Contains(term)) ||
-                    (e.Email != null && e.Email.ToLower().Contains(term)) ||
-                    ((e.Name ?? "") + " " + (e.Family ?? "")).ToLower().Contains(term)
+                    (e.Email != null && e.Email.ToLower().Contains(email)) ||
+                    ((e.Name ?? "") + " " + (e.Family ?? "")).ToLower().Contains(term)||
+                        (e.UserName != null && e.UserName.ToLower().Contains(username))
                 );
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.UserName))
-            {
-                var term = dto.UserName.Trim().ToLower();
-                query = query.Where(e => e.UserName != null && e.UserName.ToLower().Contains(term));
-            }
+            //if (!string.IsNullOrWhiteSpace(dto.UserName))
+            //{
+            //    var term = dto.UserName.Trim().ToLower();
+            //    query = query.Where(e => e.UserName != null && e.UserName.ToLower().Contains(term));
+            //}
 
        
 
