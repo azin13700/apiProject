@@ -1,5 +1,4 @@
-﻿
-using apiProject.Application.Dtos;
+﻿using apiProject.Application.Dtos.Dependancy;
 using apiProject.Application.Dtos.Responses;
 using System;
 using System.Collections.Generic;

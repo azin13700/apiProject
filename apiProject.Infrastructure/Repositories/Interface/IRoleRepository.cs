@@ -18,5 +18,6 @@ namespace apiProject.Infrastructure.Repositories.Interface
         Task<Role?> GetByNameAsync(string name);
         Task<IEnumerable<Permissions>> GetPermissionsByRoleIdAsync(int roleId);
         Task<IEnumerable<Role>> GetAllRolesAsync();
+      
     }
 }

@@ -1,5 +1,7 @@
-﻿using apiProject.Application.Dtos;
+﻿using apiProject.Application.Dtos.Dependancy;
+using apiProject.Application.Dtos.Employee;
 using apiProject.Application.Dtos.Responses;
+using apiProject.Application.Dtos.User;
 using apiProject.Application.Services.Interface;
 using apiProject.Domain.Entities;
 using apiProject.Infrastructure.Repositories.Interface;

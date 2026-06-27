@@ -1,4 +1,4 @@
-﻿using apiProject.Application.Dtos;
+﻿using apiProject.Application.Dtos.Role;
 using apiProject.Application.Services;
 using apiProject.Application.Services.Interface;
 using apiProject.Infrastructure.Repositories.Interface;

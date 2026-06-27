@@ -1,4 +1,4 @@
-﻿using apiProject.Application.Dtos;
+﻿using apiProject.Application.Dtos.Permission;
 using apiProject.Application.Dtos.Responses;
 using apiProject.Application.Services.Interface;
 using apiProject.Domain.Entities;

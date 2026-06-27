@@ -1,5 +1,5 @@
-﻿using apiProject.Application.Dtos;
-using apiProject.Application.Dtos.Responses;
+﻿using apiProject.Application.Dtos.Responses;
+using apiProject.Application.Dtos.Role;
 using apiProject.Domain.Entities;
 using System;
 using System.Collections.Generic;

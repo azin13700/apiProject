@@ -1,6 +1,4 @@
-﻿
-
-using apiProject.Application.Dtos;
+﻿using apiProject.Application.Dtos.Dependancy;
 using apiProject.Application.Dtos.Responses;
 
 namespace apiProject.Application.Services.Interface

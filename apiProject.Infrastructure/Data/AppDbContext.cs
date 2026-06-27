@@ -67,8 +67,39 @@ namespace apiProject.Infrastructure.Data
               .WithOne(x => x.Employee)
               .HasForeignKey<Photo>(x=>x.EmployeeId);
 
+            modelBuilder.Entity<Subject>()
+                .HasOne(x => x.Parent)
+                .WithMany(x => x.Childern)
+                .HasForeignKey(x => x.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Request>()
+                .HasOne(r => r.SubSubject)
+                .WithMany()
+                .HasForeignKey(r => r.SubSubjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Request>()
+                .HasOne(r => r.Unit)
+                .WithMany()
+                .HasForeignKey(r => r.UnitId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Request>()
+                .HasOne(r => r.CreatedByUser)
+                .WithMany()
+                .HasForeignKey(r => r.CreatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Request>()
+                  .HasOne(u => u.Photo)
+                  .WithOne(p => p.Request)
+                     .HasForeignKey<Request>(p => p.Id);
+
         }
-     
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Request> Requests { get; set; }
+        public DbSet<RequestPhoto> RequestPhoto { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<WorkExperience> WorkExperiences { get; set; }
         public DbSet<Dependant> Dependants { get; set; }
@@ -83,7 +114,6 @@ namespace apiProject.Infrastructure.Data
         public DbSet<Role> Role { get; set; }
     }
 }
-
-//dotnet ef database update ^
-//  --project apiProject.Infrastructure\apiProject.Infrastructure.csproj ^
-//  --startup-project apiProject.Api\apiProject.Api.csproj
+//dotnet ef migrations add editSubject
+//    --project apiProject.Infrastructure\apiProject.Infrastructure.csproj 
+//    --startup-project apiProject.Api\apiProject.Api.csproj

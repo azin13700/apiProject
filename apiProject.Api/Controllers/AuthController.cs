@@ -1,4 +1,5 @@
-﻿using apiProject.Application.Dtos;
+﻿using apiProject.Application.Dtos.Role;
+using apiProject.Application.Dtos.User;
 using apiProject.Application.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 

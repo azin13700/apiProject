@@ -29,9 +29,11 @@ builder.Services.AddScoped<IUserUnitRepository, UserUnitRepository>();
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
-
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
 
 
 builder.Services.AddControllers();

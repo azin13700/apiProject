@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace apiProject.Application.Dtos.Permission
+{
+    public class CreatePermissionDto
+    {
+        [Required]
+        [MaxLength(100)]
+        public string Name { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string Category { get; set; }
+
+        [MaxLength(200)]
+        public string? Description { get; set; }
+
+        public bool IsActive { get; set; } = true;
+    }
+}

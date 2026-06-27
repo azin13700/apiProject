@@ -137,6 +137,55 @@ namespace apiProject.Infrastructure.Migrations
                     b.ToTable("Photo");
                 });
 
+            modelBuilder.Entity("apiProject.Domain.Entities.Request", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SubSubjectId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("SubSubjectId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("apiProject.Domain.Entities.RequestPhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("BLOB");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RequestPhoto");
+                });
+
             modelBuilder.Entity("apiProject.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -184,6 +233,29 @@ namespace apiProject.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RolePermissions");
+                });
+
+            modelBuilder.Entity("apiProject.Domain.Entities.Subject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("apiProject.Domain.Entities.Unit", b =>
@@ -393,6 +465,41 @@ namespace apiProject.Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("apiProject.Domain.Entities.Request", b =>
+                {
+                    b.HasOne("apiProject.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("apiProject.Domain.Entities.RequestPhoto", "Photo")
+                        .WithOne("Request")
+                        .HasForeignKey("apiProject.Domain.Entities.Request", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("apiProject.Domain.Entities.Subject", "SubSubject")
+                        .WithMany()
+                        .HasForeignKey("SubSubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("apiProject.Domain.Entities.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("SubSubject");
+
+                    b.Navigation("Unit");
+                });
+
             modelBuilder.Entity("apiProject.Domain.Entities.RolePermissions", b =>
                 {
                     b.HasOne("apiProject.Domain.Entities.Permissions", "Permissions")
@@ -410,6 +517,16 @@ namespace apiProject.Infrastructure.Migrations
                     b.Navigation("Permissions");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("apiProject.Domain.Entities.Subject", b =>
+                {
+                    b.HasOne("apiProject.Domain.Entities.Subject", "Parent")
+                        .WithMany("Childern")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("apiProject.Domain.Entities.UserPhoto", b =>
@@ -487,11 +604,22 @@ namespace apiProject.Infrastructure.Migrations
                     b.Navigation("RolePermissions");
                 });
 
+            modelBuilder.Entity("apiProject.Domain.Entities.RequestPhoto", b =>
+                {
+                    b.Navigation("Request")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("apiProject.Domain.Entities.Role", b =>
                 {
                     b.Navigation("RolePermissions");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("apiProject.Domain.Entities.Subject", b =>
+                {
+                    b.Navigation("Childern");
                 });
 
             modelBuilder.Entity("apiProject.Domain.Entities.Unit", b =>

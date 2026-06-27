@@ -1,5 +1,5 @@
-﻿using apiProject.Application.Dtos;
-using apiProject.Application.Dtos.Responses;
+﻿using apiProject.Application.Dtos.Responses;
+using apiProject.Application.Dtos.User;
 using apiProject.Application.Services;
 using apiProject.Application.Services.Interface;
 using Microsoft.AspNetCore.Mvc;

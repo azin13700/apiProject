@@ -1,5 +1,5 @@
-﻿using apiProject.Application.Dtos;
-using apiProject.Application.Dtos.Responses;
+﻿using apiProject.Application.Dtos.Responses;
+using apiProject.Application.Dtos.User;
 using apiProject.Application.Services.Interface;
 using apiProject.Domain.Entities;
 using apiProject.Infrastructure.Repositories.Interface;
@@ -56,7 +56,7 @@ namespace apiProject.Application.Services
                 NationalNo = dto.NationalNo,
                 Password = dto.Password,
                 PhoneNumber = dto.PhoneNumber,
-                UserName = dto.UserName,
+                UserName = dto.UserName
             };
             await _repository.AddUserAsync(user);
 
@@ -307,8 +307,7 @@ namespace apiProject.Application.Services
                 .OrderByDescending(e => e.Id)
                 .ToList();
 
-            // ✅ لاگ برای دیباگ
-            Console.WriteLine($"🔍 تعداد نتایج قبل از Select: {result.Count}");
+
 
             var response = result.Select(user => new UserResponseDto
             {
@@ -336,7 +335,7 @@ namespace apiProject.Application.Services
                  .FirstOrDefault()
             }).ToList();
 
-            Console.WriteLine($"🔍 تعداد نتایج نهایی: {response.Count}");
+
 
             return response;
         }
@@ -358,7 +357,7 @@ namespace apiProject.Application.Services
             user.Family = dto.Family;
             user.DateOfBirth = dto.DateOfBirth;
             user.NationalNo = dto.NationalNo;
-            user.Password = dto.Password;
+          //  user.Password = dto.Password;
             user.PhoneNumber = dto.PhoneNumber;
             user.UserName = user.UserName;
             user.Email = dto.Email;
