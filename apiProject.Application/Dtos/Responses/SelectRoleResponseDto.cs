@@ -9,9 +9,16 @@ namespace apiProject.Application.Dtos.Responses
     public class SelectRoleResponseDto
     {
         public int UserId { get; set; }
+
         public int RoleId { get; set; }
+
         public string RoleName { get; set; }
-        public List<string> Permissions { get; set; }
-        public string Token { get; set; }
+
+        public int UnitId { get; set; }
+
+        public string UnitName { get; set; } = string.Empty;
+
+        public List<string> Permissions { get; set; } = new();
+
     }
 }

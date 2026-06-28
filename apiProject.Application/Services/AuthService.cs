@@ -69,32 +69,31 @@ namespace apiProject.Application.Services
         }
         public async Task<SelectRoleResponseDto> SelectRoleAsync(int userId, int roleId)
         {
-            // 1. بررسی وجود کاربر
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user == null)
                 throw new Exception("کاربر یافت نشد");
 
-            // 2. بررسی وجود نقش
             var role = await _roleRepository.GetByIdRoleAsync(roleId);
             if (role == null)
                 throw new Exception("نقش یافت نشد");
 
-         
-            //var userRoles = await _userRepository.GetUserByIdAsync(userId);
-
-            //    throw new Exception("شما دسترسی به این نقش را ندارید");
-
-            // 4. دریافت دسترسی‌های نقش
             var permissions = await _roleRepository.GetPermissionsByRoleIdAsync(roleId);
 
-            // 5. ساخت پاسخ
+            var userUnit = user.UserUnits.FirstOrDefault();
+
             return new SelectRoleResponseDto
             {
-                UserId = userId,
-                RoleId = roleId,
+                UserId = user.Id,
+
+                RoleId = role.Id,
                 RoleName = role.Name,
-             Permissions = permissions.Select(p => p.Name).ToList(),
-             //   Token = GenerateToken(userId, user.UserName, roleId) // اگر JWT دارید
+
+                UnitId = userUnit?.UnitId ?? 0,
+                UnitName = userUnit?.Unit?.Name ?? string.Empty,
+
+                Permissions = permissions
+                    .Select(p => p.Name)
+                    .ToList()
             };
         }
 
