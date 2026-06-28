@@ -1,6 +1,7 @@
 ﻿using apiProject.Application.Dtos.Request;
 using apiProject.Application.Dtos.Responses;
 using apiProject.Application.Dtos.Subject;
+using apiProject.Application.Dtos.User;
 using apiProject.Application.Services.Interface;
 using apiProject.Domain.Entities;
 using apiProject.Infrastructure.Repositories.Interface;
@@ -120,6 +121,48 @@ namespace apiProject.Application.Services
 
                 UnitName = x.Unit.Name
 
+            }).ToList();
+        }
+
+        public async Task<List<RequestWorkFlowDto>> SearchAsync(SearchRequestDto dto)
+        {
+            var requests = await _repository.GetRequestsByUserIdAsync(dto.UserId);
+
+            var query = requests.AsQueryable();
+
+            if (dto.UnitId?.Any() == true)
+            {
+                query = query.Where(x => dto.UnitId.Contains(x.UnitId));
+            }
+
+            if (dto.SubjectId?.Any() == true)
+            {
+                query = query.Where(x => dto.SubjectId.Contains(x.SubSubject.ParentId!.Value));
+            }
+
+            if (dto.SubSubjectId?.Any() == true)
+            {
+                query = query.Where(x => dto.SubSubjectId.Contains(x.SubSubjectId));
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.RequestCode))
+            {
+                query = query.Where(x => x.RequestCode.Contains(dto.RequestCode));
+            }
+
+            var result = query
+            .OrderByDescending(e => e.Id)
+            .ToList();
+
+            return result.Select(x => new RequestWorkFlowDto
+            {
+                Id = x.Id,
+                SubjectTitle = x.SubSubject.Parent.Title,
+                SubSubjectTitle = x.SubSubject.Title,
+                Description = x.Description,
+                CreatedDate = x.CreatedDate,
+                UnitName = x.Unit.Name,
+                RequestCode = x.RequestCode
             }).ToList();
         }
     }

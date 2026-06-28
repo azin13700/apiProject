@@ -1,6 +1,7 @@
 ﻿using apiProject.Application.Dtos.Request;
 using apiProject.Application.Dtos.Responses;
 using apiProject.Application.Dtos.Subject;
+using apiProject.Application.Dtos.User;
 using apiProject.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace apiProject.Application.Services.Interface
         Task<RequestResponseDto> CreateRequestAsync(CreateRequestDto dto);
         Task<bool?> ChangeStatus(ChangeStatusRequestDto dto);
         Task<List<RequestWorkFlowDto>> GetRequestsByUserIdAsync(int userId);
+        Task<List<RequestWorkFlowDto>> SearchAsync(SearchRequestDto dto);
 
         //Task<List<RequestDto>> GetAllRequestsAsync();
 

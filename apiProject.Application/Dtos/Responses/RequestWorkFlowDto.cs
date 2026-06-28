@@ -19,5 +19,7 @@ namespace apiProject.Application.Dtos.Responses
         public DateTime CreatedDate { get; set; }
 
         public string UnitName { get; set; }
+        public string RequestCode { get; set; }
+
     }
 }

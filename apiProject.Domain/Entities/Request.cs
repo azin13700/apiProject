@@ -19,8 +19,8 @@ namespace apiProject.Domain.Entities
         public DateTime CreatedDate { get; set; }
 
         public int CreatedByUserId { get; set; }
-        public User CreatedByUser { get; set; } 
-
+        public User CreatedByUser { get; set; }
+        public string RequestCode { get; set; }
 
     }
 }

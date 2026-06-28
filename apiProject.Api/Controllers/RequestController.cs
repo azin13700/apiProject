@@ -1,5 +1,6 @@
 ﻿using apiProject.Application.Dtos.Request;
 using apiProject.Application.Dtos.Subject;
+using apiProject.Application.Dtos.User;
 using apiProject.Application.Services.Interface;
 using apiProject.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,17 @@ namespace apiProject.Api.Controllers
                 id = result.RequestId,
                 message = "درخواست با موفقیت ایجاد شد"
             });
+        }
+
+
+        [HttpPost("Search")]
+        public async Task<IActionResult> Search([FromBody] SearchRequestDto dto)
+        {
+            if (dto == null)
+                return BadRequest("اطلاعات جستجو خالی است");
+
+            var result = await _service.SearchAsync(dto);
+            return Ok(result);
         }
 
         [HttpGet("work-flow/{userId}")]
