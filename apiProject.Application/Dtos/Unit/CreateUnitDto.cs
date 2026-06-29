@@ -10,9 +10,9 @@ namespace apiProject.Application.Dtos.Unit
   public  class CreateUnitDto
     {
 
-        [Required]
+    
         public string Name { get; set; }
-
+        public int? ParentId { get; set; }
         public string? Description { get; set; }
         public bool? IsActive { get; set; } = true;
     }

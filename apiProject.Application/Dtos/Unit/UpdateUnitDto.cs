@@ -9,12 +9,18 @@ namespace apiProject.Application.Dtos.Unit
 {
    public class UpdateUnitDto
     {
+        [Required]
         public int UnitId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "نام واحد الزامی است")]
+        [MaxLength(100)]
         public string Name { get; set; }
 
+        public int? ParentId { get; set; }
+
+        [MaxLength(500)]
         public string? Description { get; set; }
+
         public bool? IsActive { get; set; }
     }
 }

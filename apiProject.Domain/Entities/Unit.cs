@@ -18,6 +18,10 @@ namespace apiProject.Domain.Entities
         public string? Description { get; set; }
         public bool? IsActive { get; set; }
         public DateOnly UpdatedAt { get; set; }
+        public int? ParentId { get; set; }
+
+        public Unit Parent { get; set; }
+        public ICollection<Unit> Childern { get; set; } = new List<Unit>();
         public DateOnly CreatedAt { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 
         public ICollection<UserUnit> UserUnits { get; set; } = new List<UserUnit>();

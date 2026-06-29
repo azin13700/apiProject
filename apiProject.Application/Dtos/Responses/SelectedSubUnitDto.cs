@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace apiProject.Application.Dtos.Responses
 {
-   public class RequestResponseDto
+  public  class SelectedSubUnitDto
     {
-        public int RequestId { get; set; }
-        public string RequestCode { get; set; }
+        public int UnitId { get; set; }
+        public string Name { get; set; }
+        public int? ParentId { get; set; }
     }
 }

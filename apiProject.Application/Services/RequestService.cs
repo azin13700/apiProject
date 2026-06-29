@@ -65,14 +65,18 @@ namespace apiProject.Application.Services
                 UnitId=dto.UnitId,
                 CreatedByUserId = dto.CreatedByUserId,
                 Description = dto.Description ,
-                SubSubjectId = dto.SubSubjectId 
-                
+                SubSubjectId = dto.SubSubjectId,
+                 RequestCode = "TEMP"
             };
 
             await _repository.AddRequestAsync(request);
             await _repository.SaveChangesAsync();
 
-
+            var random = new Random();
+            int randomNumber = random.Next(1, 11);
+            string requestCode = request.Id.ToString() + randomNumber.ToString();
+            request.RequestCode = requestCode;
+            await _repository.SaveChangesAsync();
 
 
             if (dto.Photo != null)
@@ -93,7 +97,8 @@ namespace apiProject.Application.Services
             }
             return new RequestResponseDto
             {
-                 RequestId = request.Id
+                 RequestId = request.Id,
+                   RequestCode = request.RequestCode,
             };
 
         }
@@ -119,7 +124,8 @@ namespace apiProject.Application.Services
 
                 CreatedDate = x.CreatedDate,
 
-                UnitName = x.Unit.Name
+                UnitName = x.Unit.Name,
+                RequestCode = x.RequestCode ?? ""
 
             }).ToList();
         }

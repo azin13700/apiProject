@@ -49,6 +49,12 @@ namespace apiProject.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async  Task<List<Unit>> GetAllMainUnitAsync()
+        {
+            return await _context.Unit
+               .Where(x => x.ParentId == null)
+               .ToListAsync();
+        }
 
         public async Task<Unit?> GetByIdAsync(int id)
         {
@@ -58,6 +64,12 @@ namespace apiProject.Infrastructure.Repositories
         public async  Task<UserUnit?> GetByUserUnitIdAsync(int id)
         {
             return await _context.UserUnit.FindAsync(id);
+        }
+
+        public async Task<List<Unit>> GetChildrenAsync(int parentId)
+        {
+            return await _context.Unit
+                  .Where(x => x.ParentId != null).ToListAsync();
         }
 
         public async Task<int> SaveChangesAsync()

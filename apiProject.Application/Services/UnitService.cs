@@ -38,16 +38,26 @@ namespace apiProject.Application.Services
 
         public async Task<int> CreateAsync(CreateUnitDto dto)
         {
+            
+            if (dto.ParentId.HasValue)
+            {
+                var parent = await _repository.GetByIdAsync(dto.ParentId.Value);
+                if (parent == null)
+                    throw new Exception("واحد والد یافت نشد");
+            }
+
             var unit = new Unit
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                IsActive= dto.IsActive,
-                CreatedAt = DateOnly.FromDateTime(DateTime.UtcNow),
+                ParentId = dto.ParentId,
+                IsActive = dto.IsActive ?? true,
+                CreatedAt = DateOnly.FromDateTime(DateTime.UtcNow)
             };
 
             await _repository.AddAsync(unit);
             await _repository.SaveChangesAsync();
+
             return unit.Id;
         }
 
@@ -63,12 +73,14 @@ namespace apiProject.Application.Services
 
             return units.Select(unit => new UnitResponseDto
             {
-                UnitId = unit.Id,          
-                Name = unit.Name,        
+                UnitId = unit.Id,
+                Name = unit.Name,
                 Description = unit.Description,
+                ParentId = unit.ParentId,
+             
+                IsActive = (bool)unit.IsActive,
                 UserCount = unit.UserUnits?.Count ?? 0,
-                IsActive = unit.IsActive,
-               
+
 
             }).ToList();
         }
@@ -85,8 +97,63 @@ namespace apiProject.Application.Services
                 UnitId = unit.Id,
                 Name = unit.Name,
                 Description = unit.Description,
-                  IsActive = unit.IsActive    
+                  IsActive = (bool)unit.IsActive,
+                  ParentId = unit.ParentId
             };
+        }
+
+        public Task<List<UnitResponseDto>> GetChildrenAsync(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<UnitResponseDto>> GetRootUnitsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<UnitResponseDto?>> GetSubSubjectByIdAsync(int parentId)
+        {
+            var units = await _repository.GetChildrenAsync(parentId);
+
+            if (units == null)
+                return null;
+            return units.Select(unit => new UnitResponseDto
+            {
+                UnitId = unit.Id,
+                Name = unit.Name,
+                Description = unit.Description,
+                IsActive = (bool)unit.IsActive,
+                ParentId = unit.ParentId
+
+            }).ToList();
+        }
+
+        public async Task<List<SelectedSubUnitDto?>> GetSubUnit(int unitId)
+        {
+            var subjects = await _repository.GetChildrenAsync(unitId);
+            if (subjects == null)
+                return null;
+            return subjects.Select(sub => new SelectedSubUnitDto
+            {
+                UnitId = sub.Id,
+                ParentId = sub.ParentId,
+                Name = sub.Name
+
+            }).ToList();
+        }
+
+        public async Task<bool> ToggleStatusAsync(int id)
+        {
+            var employee = await _repository.GetByIdAsync(id);
+            if (employee == null)
+            {
+                return false;
+            }
+            employee.IsActive = !employee.IsActive;
+            await _repository.UpdateAsync(employee);
+            await _repository.SaveChangesAsync();
+            return true;
         }
 
         public async  Task UpdateAsync(UpdateUnitDto dto)
@@ -104,5 +171,9 @@ namespace apiProject.Application.Services
             await _repository.SaveChangesAsync();
         }
 
+        public Task UpdateAsync(int id, UpdateUnitDto dto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

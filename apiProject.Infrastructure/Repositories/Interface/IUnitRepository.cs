@@ -18,5 +18,8 @@ namespace apiProject.Infrastructure.Repositories.Interface
         Task<int> SaveChangesAsync();
 
         Task DeleteByUserIdAsync(int userId);
+        Task<List<Unit>> GetChildrenAsync(int parentId);
+        Task<List<Unit>> GetAllMainUnitAsync();
     }
+
 }

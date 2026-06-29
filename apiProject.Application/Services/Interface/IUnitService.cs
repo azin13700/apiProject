@@ -12,10 +12,12 @@ namespace apiProject.Application.Services.Interface
     {
         Task<List<UnitResponseDto>> GetAllAsync();
         Task<UnitResponseDto?> GetByIdAsync(int id);
+        Task<List<UnitResponseDto>> GetChildrenAsync(int parentId);
+        Task<List<UnitResponseDto>> GetRootUnitsAsync();
         Task<int> CreateAsync(CreateUnitDto dto);
-        Task UpdateAsync(UpdateUnitDto dto);
+        Task UpdateAsync(int id, UpdateUnitDto dto);
         Task DeleteAsync(int id);
-      Task<bool?> ChangeStatus(ChangeStatusUnitDto dto);
-
+        Task<bool> ToggleStatusAsync(int id);
+        Task UpdateAsync(UpdateUnitDto dto);
     }
 }

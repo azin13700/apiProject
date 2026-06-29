@@ -79,7 +79,7 @@ namespace apiProject.Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                await _unitService.UpdateAsync(dto);
+                await _unitService.UpdateAsync(id,dto);
                 return Ok(new { success = true, message = "کاربر با موفقیت به‌روزرسانی شد" });
             }
             catch (Exception ex)
@@ -88,11 +88,34 @@ namespace apiProject.Api.Controllers
             }
         }
 
-        [HttpPost("ChangeStatus")]
-        public async Task<IActionResult> ChangeStatus(ChangeStatusUnitDto dto)
+   
+        [HttpPatch("ToggleStatus/{id}")]
+        public async Task<IActionResult> ToggleStatus(int id)
         {
-            await _unitService.ChangeStatus(dto);
-            return Ok(new { message = " " });
+            try
+            {
+                await _unitService.ToggleStatusAsync(id);
+                return Ok(new { success = true, message = "وضعیت واحد با موفقیت تغییر کرد" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
         }
+        //[HttpGet("{parentId}/children")]
+        //public async Task<IActionResult> GetChildren(int parentId)
+        //{
+        //    var result = await _unitService.GetSubSubjectByIdAsync(parentId);
+
+        //    return Ok(result);
+        //}
+
+        //[HttpGet("{unitId}/subUnits")]
+        //public async Task<IActionResult> GetSubSubjects(int unitId)
+        //{
+        //    var result = await _unitService.GetSubUnit(unitId);
+
+        //    return Ok(result);
+        //}
     }
 }
