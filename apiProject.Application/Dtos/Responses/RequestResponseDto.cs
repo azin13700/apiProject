@@ -10,5 +10,6 @@ namespace apiProject.Application.Dtos.Responses
     {
         public int RequestId { get; set; }
         public string RequestCode { get; set; }
+        public string Massage { get; set; }
     }
 }

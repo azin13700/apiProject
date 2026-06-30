@@ -43,7 +43,6 @@ namespace apiProject.Application.Services
         }
         public async Task<RequestResponseDto> CreateRequestAsync(CreateRequestDto dto)
         {
-            // var subject =  await _subjectRepository.GetSubjectByIdAsync(dto.)
 
             var unit = await _unitRepository.GetByIdAsync(dto.UnitId);
             if (unit == null)
@@ -51,12 +50,6 @@ namespace apiProject.Application.Services
 
             if (string.IsNullOrWhiteSpace(dto.Description))
                 throw new Exception("لطفاً متن درخواست را وارد کنید.");
-
-            //if (subject == null)
-            //    throw new Exception("موضوع انتخاب شده یافت نشد.");
-
-            //if (subSubject == null)
-            //    throw new Exception("زیرموضوع انتخاب شده یافت نشد.");
 
 
             var request = new Request()

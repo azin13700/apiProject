@@ -25,6 +25,7 @@ namespace apiProject.Api.Controllers
             {
                 success = true,
                 id = result.RequestId,
+                requestCode = result.RequestCode,
                 message = "درخواست با موفقیت ایجاد شد"
             });
         }
